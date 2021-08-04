@@ -1,20 +1,12 @@
-// Requiring express and https
 const express = require("express");
 const https = require("https");
-
-//Requiring and configuring dotenv
 require("dotenv").config();
 
-//running the express app
 const app = express();
 
-//Get the data from the html form
 app.use(express.urlencoded({ extended: true }));
-
-//Sending the static files to client (css, images)
 app.use(express.static("public"));
 
-//Responding to the home route request to send the signup.html page
 app.get("/", function (req, res) {
   console.log("Someone is on the homepage!");
   res.sendFile(__dirname + "/signup.html");
@@ -39,6 +31,7 @@ app.post("/", function (req, res) {
         },
       },
     ],
+    update_existing: true,
   };
 
   //converting it to a json object
@@ -62,12 +55,9 @@ app.post("/", function (req, res) {
   const httpsRequest = https.request(url, options, function (httpsResponse) {
     console.log("statusCode:", httpsResponse.statusCode);
 
-    //Sending the success or failure message
-    sendFeedback(res, httpsResponse.statusCode);
-
     //Reading the data (json) obj from the https response (from mailchimp)
     httpsResponse.on("data", function (_data) {
-      // console.log(JSON.parse(_data));
+      sendFeedback(res, httpsResponse.statusCode, JSON.parse(_data));
     });
   });
 
@@ -85,13 +75,13 @@ app.get("/retry", function (req, res) {
 
 app.listen(3000, function () {
   console.log(
-    "----------------------------------------------------------------------------------------------------------------------------------------"
+    "-------------------------------------------------------------------------------------------------------"
   );
   console.log("Server is running on port 3000");
 });
 
-function sendFeedback(res, statusCode) {
-  if (statusCode === 200) {
+function sendFeedback(res, statusCode, data) {
+  if (statusCode === 200 && data.error_count === 0) {
     res.sendFile(__dirname + "/success.html");
   } else {
     res.sendFile(__dirname + "/failure.html");
