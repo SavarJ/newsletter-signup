@@ -3,6 +3,7 @@ const https = require("https");
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT ?? 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -73,11 +74,11 @@ app.get("/retry", function (req, res) {
   res.redirect("/");
 });
 
-app.listen(3000, function () {
+app.listen(PORT, function () {
   console.log(
     "-------------------------------------------------------------------------------------------------------"
   );
-  console.log("Server is running on port 3000");
+  console.log("Server is running on port" + PORT);
 });
 
 function sendFeedback(res, statusCode, data) {
