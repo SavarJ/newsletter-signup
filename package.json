@@ -4,6 +4,7 @@
   "description": "Simple Mailing list signup page",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Savar Jain",
