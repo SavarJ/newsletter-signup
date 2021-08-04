@@ -1,0 +1,15 @@
+.last-line {
+  margin-top: 50px;
+  color: lightgray;
+  font-size: small;
+}
+
+#my {
+  text-decoration: none;
+  color: rgb(66, 227, 233);
+}
+
+#my:hover {
+  font-weight: bold;
+  color: rgb(140, 231, 235);
+}
